@@ -1,0 +1,29 @@
+{
+  "name": "q-and-a",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "clean_questions": "node --max-old-space-size=4096 etl/pipelines/clean_questions.js",
+    "insert_questions": "node --max-old-space-size=4096 etl/pipelines/insert_questions.js",
+    "answers": "node --max-old-space-size=4096 etl/pipelines/answers.js",
+    "answers_photos": "node --max-old-space-size=4096 etl/pipelines/answers_photos.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/6-sdc-visual-maysix/q-and-a.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/6-sdc-visual-maysix/q-and-a/issues"
+  },
+  "homepage": "https://github.com/6-sdc-visual-maysix/q-and-a#readme",
+  "dependencies": {
+    "fast-csv": "^4.3.6",
+    "mysql": "^2.18.1",
+    "path": "^0.12.7",
+    "pg": "^8.6.0"
+  }
+}

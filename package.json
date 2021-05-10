@@ -4,10 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "clean_questions": "node --max-old-space-size=4096 etl/pipelines/clean_questions.js",
-    "insert_questions": "node --max-old-space-size=4096 etl/pipelines/insert_questions.js",
-    "answers": "node --max-old-space-size=4096 etl/pipelines/answers.js",
-    "answers_photos": "node --max-old-space-size=4096 etl/pipelines/answers_photos.js"
+    "start": "nodemon server/app.js",
+    "test": "jest",
+    "run:questions_tests": "node testing_suite/questions_spec.js"
   },
   "repository": {
     "type": "git",
@@ -21,9 +20,13 @@
   },
   "homepage": "https://github.com/6-sdc-visual-maysix/q-and-a#readme",
   "dependencies": {
+    "express": "^4.17.1",
     "fast-csv": "^4.3.6",
+    "jest": "^26.6.3",
     "mysql": "^2.18.1",
+    "nodemon": "^2.0.7",
     "path": "^0.12.7",
-    "pg": "^8.6.0"
+    "pg": "^8.6.0",
+    "supertest": "^6.1.3"
   }
 }

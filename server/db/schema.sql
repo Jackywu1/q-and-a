@@ -23,7 +23,7 @@ CREATE TABLE Questions (
   `question_date` TEXT NULL DEFAULT NULL,
   `asker_name` TEXT NULL DEFAULT NULL,
   `question_helpfulness` INTEGER NULL DEFAULT NULL,
-  `reported` INTEGER DEFAULT 0,
+  `reported` BIT DEFAULT 0,
   `product_id` INTEGER NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
 );

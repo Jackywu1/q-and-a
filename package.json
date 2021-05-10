@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "clean_questions": "node --max-old-space-size=4096 etl/pipelines/clean_questions.js",
+    "questions": "node --max-old-space-size=4096 etl/pipelines/questions.js",
     "insert_questions": "node --max-old-space-size=4096 etl/pipelines/insert_questions.js",
     "answers": "node --max-old-space-size=4096 etl/pipelines/answers.js",
     "answers_photos": "node --max-old-space-size=4096 etl/pipelines/answers_photos.js"
@@ -21,9 +21,12 @@
   },
   "homepage": "https://github.com/6-sdc-visual-maysix/q-and-a#readme",
   "dependencies": {
+    "express": "^4.17.1",
     "fast-csv": "^4.3.6",
+    "fs": "0.0.1-security",
     "mysql": "^2.18.1",
     "path": "^0.12.7",
-    "pg": "^8.6.0"
+    "pg": "^8.6.0",
+    "supertest": "^6.1.3"
   }
 }

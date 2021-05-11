@@ -19,14 +19,17 @@ DROP TABLE IF EXISTS `Questions`;
 
 CREATE TABLE Questions (
   `id` INTEGER NOT NULL AUTO_INCREMENT,
+  `product_id` INTEGER NULL DEFAULT NULL,
   `question_body` TEXT NULL DEFAULT NULL,
   `question_date` TEXT NULL DEFAULT NULL,
   `asker_name` TEXT NULL DEFAULT NULL,
-  `question_helpfulness` INTEGER NULL DEFAULT NULL,
   `reported` BIT DEFAULT 0,
-  `product_id` INTEGER NULL DEFAULT NULL,
+  `question_helpfulness` INTEGER NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
 );
+
+-- header: id,product_id,body,date_written,asker_name,asker_email,reported,helpful
+-- want to skip adding the asker_email column to this table
 
 -- ---
 -- Table 'Answers'

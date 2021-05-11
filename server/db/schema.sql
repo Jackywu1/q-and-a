@@ -19,14 +19,32 @@ DROP TABLE IF EXISTS `Questions`;
 
 CREATE TABLE Questions (
   `id` INTEGER,
-  `question_body` TEXT,
-  `question_date` TEXT,
-  `asker_name` TEXT,
-  `question_helpfulness` INTEGER,
-  `reported` BIT,
   `product_id` INTEGER,
+  `body` TEXT,
+  `date_written` DATETIME,
+  `asker_name` TEXT,
+  `asker_email` TEXT,
+  `reported` BIT,
+  `helpful` INTEGER,
   PRIMARY KEY (`id`)
 );
+
+LOAD DATA LOCAL INFILE 'etl/data/cleaned/questions_cleaned.csv'
+INTO TABLE Questions
+FIELDS TERMINATED BY ','
+OPTIONALLY ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 ROWS (
+  id,
+  product_id,
+  body,
+  date_written,
+  asker_name,
+  asker_email,
+  reported,
+  helpful
+);
+-- SET date_written=FROM_UNIXTIME(@date_written/1000);
 
 -- ---
 -- Table 'Answers'
@@ -36,14 +54,31 @@ CREATE TABLE Questions (
 DROP TABLE IF EXISTS `Answers`;
 
 CREATE TABLE Answers (
-  `id` INTEGER NOT NULL AUTO_INCREMENT,
-  `answer_body` TEXT NULL DEFAULT NULL,
-  `answer_date` DATE NULL DEFAULT NULL,
-  `answerer_name` VARCHAR(30) NULL DEFAULT NULL,
-  `helpfulness` INTEGER NULL DEFAULT NULL,
-  `questions_id` INTEGER NULL DEFAULT NULL,
-  `photo_id` INTEGER NULL DEFAULT NULL,
+  `id` INTEGER,
+  `questions_id` INTEGER,
+  `answer_body` TEXT,
+  `answer_date` DATETIME,
+  `answerer_name` TEXT,
+  `answerer_email` TEXT,
+  `reported` BIT,
+  `helpfulness` INTEGER,
   PRIMARY KEY (`id`)
+);
+
+LOAD DATA LOCAL INFILE 'etl/data/cleaned/answers_cleaned.csv'
+INTO TABLE Answers
+FIELDS TERMINATED BY ','
+OPTIONALLY ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 ROWS (
+  id,
+  questions_id,
+  answer_body,
+  answer_date,
+  answerer_name,
+  answerer_email,
+  reported,
+  helpfulness
 );
 
 -- ---
@@ -55,18 +90,29 @@ DROP TABLE IF EXISTS `Photos`;
 
 CREATE TABLE Photos (
   `id` INTEGER NOT NULL AUTO_INCREMENT,
+  `answer_id` INTEGER NULL DEFAULT NULL,
   `photo_url` MEDIUMTEXT NULL DEFAULT NULL,
-  `answers_id` INTEGER NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
+);
+
+LOAD DATA LOCAL INFILE 'etl/data/cleaned/answers_photos_cleaned.csv'
+INTO TABLE Photos
+FIELDS TERMINATED BY ','
+OPTIONALLY ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 ROWS (
+  id,
+  answer_id,
+  photo_url
 );
 
 -- ---
 -- Foreign Keys
 -- ---
 
-ALTER TABLE `Answers` ADD FOREIGN KEY (questions_id) REFERENCES `Questions` (`id`);
-ALTER TABLE `Answers` ADD FOREIGN KEY (photo_id) REFERENCES `Photos` (`id`);
-ALTER TABLE `Photos` ADD FOREIGN KEY (answers_id) REFERENCES `Answers` (`id`);
+-- ALTER TABLE `Answers` ADD FOREIGN KEY (questions_id) REFERENCES `Questions` (`id`);
+-- ALTER TABLE `Answers` ADD FOREIGN KEY (photo_id) REFERENCES `Photos` (`id`);
+-- ALTER TABLE `Photos` ADD FOREIGN KEY (answers_id) REFERENCES `Answers` (`id`);
 
 -- ---
 -- Table Properties

@@ -10,21 +10,21 @@
 --
 -- ---
 
-DROP DATABASE IF EXISTS `test`;
+DROP DATABASE IF EXISTS `QA`;
 
-CREATE DATABASE test;
-use test;
+CREATE DATABASE QA;
+use QA;
 
 DROP TABLE IF EXISTS `Questions`;
 
 CREATE TABLE Questions (
-  `id` INTEGER NOT NULL AUTO_INCREMENT,
-  `question_body` TEXT NULL DEFAULT NULL,
-  `question_date` TEXT NULL DEFAULT NULL,
-  `asker_name` TEXT NULL DEFAULT NULL,
-  `question_helpfulness` INTEGER NULL DEFAULT NULL,
-  `reported` INTEGER DEFAULT 0,
-  `product_id` INTEGER NULL DEFAULT NULL,
+  `id` INTEGER,
+  `question_body` TEXT,
+  `question_date` TEXT,
+  `asker_name` TEXT,
+  `question_helpfulness` INTEGER,
+  `reported` BIT,
+  `product_id` INTEGER,
   PRIMARY KEY (`id`)
 );
 
@@ -37,7 +37,7 @@ DROP TABLE IF EXISTS `Answers`;
 
 CREATE TABLE Answers (
   `id` INTEGER NOT NULL AUTO_INCREMENT,
-  `answer_body` MEDIUMTEXT NULL DEFAULT NULL,
+  `answer_body` TEXT NULL DEFAULT NULL,
   `answer_date` DATE NULL DEFAULT NULL,
   `answerer_name` VARCHAR(30) NULL DEFAULT NULL,
   `helpfulness` INTEGER NULL DEFAULT NULL,

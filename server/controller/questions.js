@@ -1,18 +1,24 @@
+const { retrieve, insert, increment, update } = require('../model/questions.js');
+
 module.exports = {
   getQuestions(req, res) {
-    const { product_id, page, count } = req.query;
-    const inputData = {
-      product_id,
-      page,
-      count,
-    };
+    let { product_id, page, count } = req.query;
 
-    res.send('test');
+    page = page || 1;
+    count = count || 5;
+
+    retrieve(product_id, page, count, res);
   },
 
   postQuestion(req, res) {
-    res.send(req.body);
+    insert(req.body, res);
   },
 
+  putHelpful(req, res) {
+    increment(req.params.question_id, res);
+  },
 
+  putReport(req, res) {
+    update(req.params.question_id, res);
+  }
 }

@@ -18,13 +18,13 @@ use QA;
 DROP TABLE IF EXISTS `Questions`;
 
 CREATE TABLE Questions (
-  `id` INTEGER,
+  `id` INTEGER AUTO_INCREMENT,
   `product_id` INTEGER,
   `body` TEXT,
   `date_written` DATETIME,
   `asker_name` TEXT,
   `asker_email` TEXT,
-  `reported` BIT,
+  `reported` TINYINT,
   `helpful` INTEGER,
   PRIMARY KEY (`id`)
 );
@@ -54,13 +54,13 @@ IGNORE 1 ROWS (
 DROP TABLE IF EXISTS `Answers`;
 
 CREATE TABLE Answers (
-  `id` INTEGER,
+  `id` INTEGER AUTO_INCREMENT,
   `questions_id` INTEGER,
   `answer_body` TEXT,
   `answer_date` DATETIME,
   `answerer_name` TEXT,
   `answerer_email` TEXT,
-  `reported` BIT,
+  `reported` TINYINT,
   `helpfulness` INTEGER,
   PRIMARY KEY (`id`)
 );

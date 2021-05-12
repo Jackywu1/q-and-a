@@ -61,7 +61,7 @@ CREATE TABLE Answers (
   `answerer_name` TEXT,
   `answerer_email` TEXT,
   `reported` TINYINT,
-  `helpfulness` INTEGER,
+  `helpful` INTEGER,
   PRIMARY KEY (`id`)
 );
 
@@ -78,7 +78,7 @@ IGNORE 1 ROWS (
   answerer_name,
   answerer_email,
   reported,
-  helpfulness
+  helpful
 );
 
 -- ---

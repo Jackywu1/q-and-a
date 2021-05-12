@@ -15,8 +15,15 @@ module.exports = {
     let query = `INSERT INTO Questions (product_id, body, asker_name, asker_email) `;
     query += `VALUES (${product_id}, '${body}', '${name}', '${email}')`;
 
-    db.query(query, (err, success) => {
-      err ? res.status(404).send(err) : res.status(201).send(success);
+    db.query(query, (err, data) => {
+      const { insertId } = data;
+      console.log(`inserted as id ${insertId}`);
+
+      db.query(`SELECT LAST_INSERT_ID()`, (err, id) => {
+        err ? console.log('error') : console.log(`id: `, id);
+      });
+
+      err ? res.status(404).send(err) : res.status(201).send(data);
     });
   },
 

@@ -14,11 +14,11 @@ module.exports = {
     insert(req.body, res);
   },
 
-  putHelpful(req, res) {
+  putQHelpful(req, res) {
     increment(req.params.question_id, res);
   },
 
-  putReport(req, res) {
+  putQReport(req, res) {
     update(req.params.question_id, res);
-  }
+  },
 }

@@ -67,9 +67,9 @@ CREATE TABLE Photos (
 -- Foreign Keys
 -- ---
 
-ALTER TABLE `Answers` ADD FOREIGN KEY (questions_id) REFERENCES `Questions` (`id`);
-ALTER TABLE `Answers` ADD FOREIGN KEY (photo_id) REFERENCES `Photos` (`id`);
-ALTER TABLE `Photos` ADD FOREIGN KEY (answers_id) REFERENCES `Answers` (`id`);
+-- ALTER TABLE `Answers` ADD FOREIGN KEY (questions_id) REFERENCES `Questions` (`id`);
+-- ALTER TABLE `Answers` ADD FOREIGN KEY (photo_id) REFERENCES `Photos` (`id`);
+-- ALTER TABLE `Photos` ADD FOREIGN KEY (answers_id) REFERENCES `Answers` (`id`);
 
 -- ---
 -- Table Properties

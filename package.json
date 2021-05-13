@@ -4,10 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "questions": "node --max-old-space-size=4096 etl/pipelines/questions.js",
-    "insert_questions": "node --max-old-space-size=4096 etl/pipelines/insert_questions.js",
-    "answers": "node --max-old-space-size=4096 etl/pipelines/answers.js",
-    "answers_photos": "node --max-old-space-size=4096 etl/pipelines/answers_photos.js"
+    "load:schema": "mysql -u root -p < server/db/schema.sql"
   },
   "repository": {
     "type": "git",

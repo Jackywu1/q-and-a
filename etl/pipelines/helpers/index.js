@@ -28,7 +28,5 @@ module.exports = {
     // else return rating
     // if the rating is a string
     // attempt to parse string, else return 0
-
-
   },
 }

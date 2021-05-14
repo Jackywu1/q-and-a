@@ -14,35 +14,6 @@ use QA;
 
 DROP TABLE IF EXISTS `Questions`;
 
--- CREATE TABLE Questions (
---   `id` INTEGER AUTO_INCREMENT,
---   `product_id` INTEGER,
---   `body` TEXT,
---   `date_written` DATETIME,
---   `asker_name` TEXT,
---   `asker_email` TEXT,
---   `reported` TINYINT,
---   `helpful` INTEGER,
---   PRIMARY KEY (`id`)
--- );
-
--- LOAD DATA LOCAL INFILE 'etl/data/subset/questions_cleaned.csv'
--- INTO TABLE Questions
--- FIELDS TERMINATED BY ','
--- OPTIONALLY ENCLOSED BY '"'
--- LINES TERMINATED BY '\n'
--- IGNORE 1 ROWS (
---   id,
---   product_id,
---   body,
---   @date_written,
---   asker_name,
---   asker_email,
---   reported,
---   helpful
--- )
--- SET date_written=FROM_UNIXTIME(@date_written/1000);
-
 CREATE TABLE Questions (
   `question_id` INTEGER AUTO_INCREMENT,
   `product_id` INTEGER,
@@ -55,7 +26,7 @@ CREATE TABLE Questions (
   PRIMARY KEY (`question_id`)
 );
 
-LOAD DATA LOCAL INFILE 'etl/data/subset/questions_cleaned.csv'
+LOAD DATA LOCAL INFILE 'etl/data/cleaned/questions_cleaned.csv'
 INTO TABLE Questions
 FIELDS TERMINATED BY ','
 OPTIONALLY ENCLOSED BY '"'
@@ -79,35 +50,6 @@ SET question_date=FROM_UNIXTIME(@question_date/1000);
 
 DROP TABLE IF EXISTS `Answers`;
 
--- CREATE TABLE Answers (
---   `id` INTEGER AUTO_INCREMENT,
---   `questions_id` INTEGER,
---   `answer_body` TEXT,
---   `answer_date` DATETIME,
---   `answerer_name` TEXT,
---   `answerer_email` TEXT,
---   `reported` TINYINT,
---   `helpful` INTEGER,
---   PRIMARY KEY (`id`)
--- );
-
--- LOAD DATA LOCAL INFILE 'etl/data/subset/answers_cleaned.csv'
--- INTO TABLE Answers
--- FIELDS TERMINATED BY ','
--- OPTIONALLY ENCLOSED BY '"'
--- LINES TERMINATED BY '\n'
--- IGNORE 1 ROWS (
---   id,
---   questions_id,
---   answer_body,
---   @answer_date,
---   answerer_name,
---   answerer_email,
---   reported,
---   helpful
--- )
--- SET answer_date=FROM_UNIXTIME(@answer_date/1000);
-
 CREATE TABLE Answers (
   `answer_id` INTEGER AUTO_INCREMENT,
   `questions_id` INTEGER,
@@ -120,7 +62,7 @@ CREATE TABLE Answers (
   PRIMARY KEY (`answer_id`)
 );
 
-LOAD DATA LOCAL INFILE 'etl/data/subset/answers_cleaned.csv'
+LOAD DATA LOCAL INFILE 'etl/data/cleaned/answers_cleaned.csv'
 INTO TABLE Answers
 FIELDS TERMINATED BY ','
 OPTIONALLY ENCLOSED BY '"'
@@ -151,7 +93,7 @@ CREATE TABLE Photos (
   PRIMARY KEY (`id`)
 );
 
-LOAD DATA LOCAL INFILE 'etl/data/subset/answers_photos_cleaned.csv'
+LOAD DATA LOCAL INFILE 'etl/data/cleaned/answers_photos_cleaned.csv'
 INTO TABLE Photos
 FIELDS TERMINATED BY ','
 OPTIONALLY ENCLOSED BY '"'
@@ -167,9 +109,6 @@ DELETE FROM Photos WHERE NOT EXISTS (SELECT * FROM Answers AS t1 WHERE t1.answer
 -- ---
 -- Foreign Keys
 -- -- ---
-
--- ALTER TABLE `Answers` ADD FOREIGN KEY (questions_id) REFERENCES `Questions` (`id`);
--- ALTER TABLE `Photos` ADD FOREIGN KEY (answer_id) REFERENCES `Answers` (`id`);
 
 ALTER TABLE `Answers` ADD FOREIGN KEY (questions_id) REFERENCES `Questions` (`question_id`);
 ALTER TABLE `Photos` ADD FOREIGN KEY (answer_id) REFERENCES `Answers` (`answer_id`);

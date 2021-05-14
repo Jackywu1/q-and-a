@@ -5,17 +5,22 @@ const collectAnswers = require('../helpers/collectAnswers.js');
 const collectPhotos = require('../helpers/collectPhotos.js');
 
 module.exports = {
-  retrieve(product_id, page, count, res) {
+  retrieve(product_id, page = 1, count = 5, res) {
     // query to get questions with answers
     const qaQuery = `
       SELECT
         q.question_id, q.question_body, q.question_date, q.asker_name, q.question_helpfulness, q.reported,
         a.answer_id, a.body, a.date, a.answerer_name, a.helpfulness
       FROM
-        Questions AS q INNER JOIN Answers AS a ON q.question_id = a.questions_id AND q.product_id = ${product_id}
+        Questions AS q INNER JOIN Answers AS a ON q.question_id = a.questions_id
+      WHERE
+        q.product_id = ${product_id}
+      LIMIT ${count}
     `;
 
     db.query(qaQuery, (err, questionData) => {
+      if (err) res.status(404).send(err);
+
       const results = collectQuestions(questionData);
       collectAnswers(results, questionData);
 
@@ -31,7 +36,12 @@ module.exports = {
       `;
 
       db.query(apQuery, (err, photoData) => {
+        if (err) res.status(404).send(err);
+
         collectPhotos(results, photoData);
+        results.forEach((question) => {
+          question.reported === 0 ? question.reported = false : question.reported = true;
+        });
 
         res.status(200).send({
           product_id,
@@ -67,4 +77,4 @@ module.exports = {
       err ? res.status(404).send(err) : res.status(204).send(success);
     });
   }
-}
+};

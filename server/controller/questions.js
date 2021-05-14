@@ -4,9 +4,6 @@ module.exports = {
   getQuestions(req, res) {
     let { product_id, page, count } = req.query;
 
-    page = page || 1;
-    count = count || 5;
-
     retrieve(product_id, page, count, res);
   },
 

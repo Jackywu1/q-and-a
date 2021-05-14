@@ -1,11 +1,58 @@
 const db = require('../db');
 
+const collectPhotos = require('../helpers/collectPhotos.js');
+
 module.exports = {
   retrieve(question_id, page = 1, count = 5, res) {
-    const query = `SELECT * FROM Answers WHERE questions_id = ${question_id} && reported = 0 LIMIT ${count}`;
+    // query to get answers
+    const answerQuery = `
+      SELECT
+        answer_id, body, date, answerer_name, helpfulness
+      FROM
+        Answers
+      WHERE
+        questions_id = ${question_id}
+      LIMIT ${count}
+    `;
 
-    db.query(query, (err, data) => {
-      err ? res.status(404).send(err) : res.status(200).send(data);
+    db.query(answerQuery, (err, answersData) => {
+      if (err) res.status(404).send(err);
+
+      const results = answersData;
+      results.forEach((answer) => {
+        answer.photos = [];
+      });
+
+      // query to get photos
+      const photoQuery = `
+        SELECT
+          p.answer_id, p.photo_url
+        FROM
+          Answers AS a INNER JOIN Photos AS p ON a.answer_id = p.answer_id
+        WHERE
+          a.questions_id = ${question_id}
+      `;
+
+      db.query(photoQuery, (err, photoData) => {
+        if (err) res.status(404).send(err);
+
+        photoData.forEach((photo) => {
+          const { answer_id, photo_url } = photo;
+
+          results.forEach((answer, index) => {
+            if (answer.answer_id === answer_id) {
+              results[index].photos.push(photo_url);
+            }
+          });
+        });
+
+        res.status(200).send({
+          question: question_id,
+          page,
+          count,
+          results,
+        });
+      });
     });
   },
 

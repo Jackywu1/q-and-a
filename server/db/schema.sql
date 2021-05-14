@@ -2,9 +2,6 @@
 -- Globals
 -- ---
 
--- SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
--- SET FOREIGN_KEY_CHECKS=0;
-
 -- ---
 -- Table 'Questions'
 --
@@ -17,34 +14,63 @@ use QA;
 
 DROP TABLE IF EXISTS `Questions`;
 
+-- CREATE TABLE Questions (
+--   `id` INTEGER AUTO_INCREMENT,
+--   `product_id` INTEGER,
+--   `body` TEXT,
+--   `date_written` DATETIME,
+--   `asker_name` TEXT,
+--   `asker_email` TEXT,
+--   `reported` TINYINT,
+--   `helpful` INTEGER,
+--   PRIMARY KEY (`id`)
+-- );
+
+-- LOAD DATA LOCAL INFILE 'etl/data/subset/questions_cleaned.csv'
+-- INTO TABLE Questions
+-- FIELDS TERMINATED BY ','
+-- OPTIONALLY ENCLOSED BY '"'
+-- LINES TERMINATED BY '\n'
+-- IGNORE 1 ROWS (
+--   id,
+--   product_id,
+--   body,
+--   @date_written,
+--   asker_name,
+--   asker_email,
+--   reported,
+--   helpful
+-- )
+-- SET date_written=FROM_UNIXTIME(@date_written/1000);
+
 CREATE TABLE Questions (
-  `id` INTEGER AUTO_INCREMENT,
+  `question_id` INTEGER AUTO_INCREMENT,
   `product_id` INTEGER,
-  `body` TEXT,
-  `date_written` DATETIME,
+  `question_body` TEXT,
+  `question_date` DATETIME,
   `asker_name` TEXT,
   `asker_email` TEXT,
   `reported` TINYINT,
-  `helpful` INTEGER,
-  PRIMARY KEY (`id`)
+  `question_helpfulness` INTEGER,
+  PRIMARY KEY (`question_id`)
 );
 
-LOAD DATA LOCAL INFILE 'etl/data/cleaned/questions_cleaned.csv'
+LOAD DATA LOCAL INFILE 'etl/data/subset/questions_cleaned.csv'
 INTO TABLE Questions
 FIELDS TERMINATED BY ','
 OPTIONALLY ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
 IGNORE 1 ROWS (
-  id,
+  question_id,
   product_id,
-  body,
-  date_written,
+  question_body,
+  @question_date,
   asker_name,
   asker_email,
   reported,
-  helpful
-);
--- SET date_written=FROM_UNIXTIME(@date_written/1000);
+  question_helpfulness
+)
+SET question_date=FROM_UNIXTIME(@question_date/1000);
 
 -- ---
 -- Table 'Answers'
@@ -53,33 +79,63 @@ IGNORE 1 ROWS (
 
 DROP TABLE IF EXISTS `Answers`;
 
+-- CREATE TABLE Answers (
+--   `id` INTEGER AUTO_INCREMENT,
+--   `questions_id` INTEGER,
+--   `answer_body` TEXT,
+--   `answer_date` DATETIME,
+--   `answerer_name` TEXT,
+--   `answerer_email` TEXT,
+--   `reported` TINYINT,
+--   `helpful` INTEGER,
+--   PRIMARY KEY (`id`)
+-- );
+
+-- LOAD DATA LOCAL INFILE 'etl/data/subset/answers_cleaned.csv'
+-- INTO TABLE Answers
+-- FIELDS TERMINATED BY ','
+-- OPTIONALLY ENCLOSED BY '"'
+-- LINES TERMINATED BY '\n'
+-- IGNORE 1 ROWS (
+--   id,
+--   questions_id,
+--   answer_body,
+--   @answer_date,
+--   answerer_name,
+--   answerer_email,
+--   reported,
+--   helpful
+-- )
+-- SET answer_date=FROM_UNIXTIME(@answer_date/1000);
+
 CREATE TABLE Answers (
-  `id` INTEGER AUTO_INCREMENT,
+  `answer_id` INTEGER AUTO_INCREMENT,
   `questions_id` INTEGER,
-  `answer_body` TEXT,
-  `answer_date` DATETIME,
+  `body` TEXT,
+  `date` DATETIME,
   `answerer_name` TEXT,
   `answerer_email` TEXT,
   `reported` TINYINT,
-  `helpful` INTEGER,
-  PRIMARY KEY (`id`)
+  `helpfulness` INTEGER,
+  PRIMARY KEY (`answer_id`)
 );
 
-LOAD DATA LOCAL INFILE 'etl/data/cleaned/answers_cleaned.csv'
+LOAD DATA LOCAL INFILE 'etl/data/subset/answers_cleaned.csv'
 INTO TABLE Answers
 FIELDS TERMINATED BY ','
 OPTIONALLY ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
 IGNORE 1 ROWS (
-  id,
+  answer_id,
   questions_id,
-  answer_body,
-  answer_date,
+  body,
+  @date,
   answerer_name,
   answerer_email,
   reported,
-  helpful
-);
+  helpfulness
+)
+SET date=FROM_UNIXTIME(@date/1000);
 
 -- ---
 -- Table 'Photos'
@@ -95,7 +151,7 @@ CREATE TABLE Photos (
   PRIMARY KEY (`id`)
 );
 
-LOAD DATA LOCAL INFILE 'etl/data/cleaned/answers_photos_cleaned.csv'
+LOAD DATA LOCAL INFILE 'etl/data/subset/answers_photos_cleaned.csv'
 INTO TABLE Photos
 FIELDS TERMINATED BY ','
 OPTIONALLY ENCLOSED BY '"'
@@ -106,18 +162,14 @@ IGNORE 1 ROWS (
   photo_url
 );
 
+DELETE FROM Photos WHERE NOT EXISTS (SELECT * FROM Answers AS t1 WHERE t1.answer_id = Photos.answer_id);
+
 -- ---
 -- Foreign Keys
--- ---
+-- -- ---
 
 -- ALTER TABLE `Answers` ADD FOREIGN KEY (questions_id) REFERENCES `Questions` (`id`);
--- ALTER TABLE `Answers` ADD FOREIGN KEY (photo_id) REFERENCES `Photos` (`id`);
--- ALTER TABLE `Photos` ADD FOREIGN KEY (answers_id) REFERENCES `Answers` (`id`);
+-- ALTER TABLE `Photos` ADD FOREIGN KEY (answer_id) REFERENCES `Answers` (`id`);
 
--- ---
--- Table Properties
--- ---
-
--- ALTER TABLE `Questions` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
--- ALTER TABLE `Answers` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
--- ALTER TABLE `Photos` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+ALTER TABLE `Answers` ADD FOREIGN KEY (questions_id) REFERENCES `Questions` (`question_id`);
+ALTER TABLE `Photos` ADD FOREIGN KEY (answer_id) REFERENCES `Answers` (`answer_id`);

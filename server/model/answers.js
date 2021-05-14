@@ -1,7 +1,7 @@
 const db = require('../db');
 
 module.exports = {
-  retrieve(question_id, page, count, res) {
+  retrieve(question_id, page = 1, count = 5, res) {
     const query = `SELECT * FROM Answers WHERE questions_id = ${question_id} && reported = 0 LIMIT ${count}`;
 
     db.query(query, (err, data) => {
@@ -14,8 +14,6 @@ module.exports = {
 
     let answerQuery = `INSERT INTO Answers (answer_body, answerer_name, answerer_email) `;
     answerQuery += `VALUES ('${body}', '${name}', '${email}')`;
-
-    const photoQuery = `INSERT INTO Photos () VALUES ()`;
 
     db.query(answerQuery, (err, data) => {
       const { insertId } = data;

@@ -2,13 +2,7 @@ const { retrieve, insert, increment, update } = require('../model/answers.js');
 
 module.exports = {
   getAnswers(req, res) {
-    const { question_id } = req.params;
-    let { page, count } = req.query;
-
-    page = page || 1;
-    count = count || 5;
-
-    retrieve(question_id, page, count, res);
+    retrieve(req.params.question_id, req.query.page, req.query.count, res);
   },
 
   postAnswer(req, res) {

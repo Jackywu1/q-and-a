@@ -6,7 +6,8 @@
   "scripts": {
     "start": "nodemon server/app.js",
     "test": "jest",
-    "load:schema": "mysql --local_infile=1 -u root -p < server/db/schema.sql"
+    "load:schema": "mysql --local_infile=1 -u root -p < server/db/schema.sql",
+    "test:load": "k6 run testing_suite/load/index.js"
   },
   "repository": {
     "type": "git",

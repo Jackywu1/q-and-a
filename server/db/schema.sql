@@ -112,3 +112,16 @@ DELETE FROM Photos WHERE NOT EXISTS (SELECT * FROM Answers AS t1 WHERE t1.answer
 
 ALTER TABLE `Answers` ADD FOREIGN KEY (questions_id) REFERENCES `Questions` (`question_id`);
 ALTER TABLE `Photos` ADD FOREIGN KEY (answer_id) REFERENCES `Answers` (`answer_id`);
+
+-- ---
+-- Indices
+-- -- ---
+
+ALTER TABLE Questions ADD INDEX product_id_index (product_id);
+ALTER TABLE Questions ADD INDEX question_date_index (question_date);
+ALTER TABLE Questions ADD INDEX reported_index (reported);
+ALTER TABLE Questions ADD INDEX question_helpfulness_index (question_helpfulness);
+
+ALTER TABLE Answers ADD INDEX date_index (date);
+ALTER TABLE Answers ADD INDEX reported_index (reported);
+ALTER TABLE Answers ADD INDEX helpfulness_index (helpfulness);

@@ -1,8 +1,13 @@
+const cache = require('../cache');
 const { retrieve, insert, increment, update } = require('../model/answers.js');
 
 module.exports = {
   getAnswers(req, res) {
-    retrieve(req.params.question_id, req.query.page, req.query.count, res);
+    const { question_id } = req.params;
+    const { page, count } = req.query;
+
+    const data = cache.get(`question_id ${question_id}`);
+    data ? res.send(data) : retrieve(question_id, page, count, res);
   },
 
   postAnswer(req, res) {

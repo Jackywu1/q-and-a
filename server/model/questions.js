@@ -1,4 +1,5 @@
 const db = require('../db');
+const cache = require('../cache');
 
 const collectQuestions = require('../helpers/collectQuestions.js');
 const collectAnswers = require('../helpers/collectAnswers.js');
@@ -43,10 +44,13 @@ module.exports = {
           question.reported === 0 ? question.reported = false : question.reported = true;
         });
 
-        res.status(200).send({
+        const resultData = {
           product_id,
           results,
-        });
+        };
+
+        cache.set(`product_id ${product_id}`, resultData);
+        res.status(200).send(resultData);
       });
     });
   },

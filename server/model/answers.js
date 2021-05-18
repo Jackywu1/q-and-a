@@ -1,4 +1,5 @@
 const db = require('../db');
+const cache = require('../cache');
 
 const collectPhotos = require('../helpers/collectPhotos.js');
 
@@ -46,12 +47,15 @@ module.exports = {
           });
         });
 
-        res.status(200).send({
+        const resultData = {
           question: question_id,
           page,
           count,
           results,
-        });
+        }
+
+        cache.set(`question_id ${question_id}`, resultData);
+        res.status(200).send(resultData);
       });
     });
   },

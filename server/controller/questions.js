@@ -1,10 +1,12 @@
+const cache = require('../cache');
 const { retrieve, insert, increment, update } = require('../model/questions.js');
 
 module.exports = {
   getQuestions(req, res) {
-    let { product_id, page, count } = req.query;
+    const { product_id, page, count } = req.query;
 
-    retrieve(product_id, page, count, res);
+    const data = cache.get(`product_id ${product_id}`);
+    data ? res.send(data) : retrieve(product_id, page, count, res);
   },
 
   postQuestion(req, res) {

@@ -13,7 +13,7 @@ app.post('/qa/questions', postQuestion);
 app.put('/qa/questions/:question_id/helpful', putQHelpful);
 app.put('/qa/questions/:question_id/report', putQReport);
 
-//answers
+// answers
 app.get('/qa/questions/:question_id/answers', getAnswers);
 app.post('/qa/questions/:question_id/answers', postAnswer);
 app.put('/qa/answers/:answer_id/helpful', putAHelpful);

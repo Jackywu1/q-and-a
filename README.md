@@ -231,3 +231,12 @@ Parameters
 Response
 
 `Status: 204 NO CONTENT`
+
+
+K6 Stress Testing Results
+
+<img width="629" alt="Screen Shot 2021-06-21 at 11 05 54 PM" src="https://user-images.githubusercontent.com/72538359/122872413-46acb700-d2e5-11eb-92bc-a198aa862a9b.png">
+
+Loader.io Stress Testing Results with 3 EC2 Instances
+
+<img width="1196" alt="Screen Shot 2021-06-21 at 11 07 24 PM" src="https://user-images.githubusercontent.com/72538359/122872545-76f45580-d2e5-11eb-8b47-550ad0670cc8.png">

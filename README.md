@@ -1,21 +1,25 @@
 
-# Q&A API
-
-A scaled API handling 12 million+ rows of data for an Ecommerce website
-
 ## API Reference
 
-#### Get Questions
+#### List Questions
 
 ```http
   GET /qa/questions
 ```
+Retrieves a list of questions for a particular product. This list does not include any reported questions.
+
+Parameters
 
 | Parameter | Type     | Description                |
 | :-------- | :------- | :------------------------- |
 | `product_id` | `integer` | **Required**. Specifies the product for which to retrieve questions. |
 | `page` | `integer` | Selects the page of results to return. Default 1. |
 | `count` | `integer` | Specifies how many results per page to return. Default 5. |
+
+
+Response
+
+`Status: 200 OK`
 
 ```
 {
@@ -44,17 +48,30 @@ A scaled API handling 12 million+ rows of data for an Ecommerce website
 }
 ```
 
-#### Get Answers
+#### Answers List
+
+Returns answers for a given question. This list does not include any reported answers.
 
 ```http
   GET /qa/questions/:question_id/answers
 ```
 
+Parameters
+
 | Parameter | Type     | Description                       |
 | :-------- | :------- | :-------------------------------- |
 | `question_id`      | `integer` | **Required**. ID of the question for wich answers are needed |
+
+Query Parameters 
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
 | `page`      | `integer` | Selects the page of results to return. Default 1. |
 | `count`      | `integer` | Specifies how many results per page to return. Default 5. |
+
+Response
+
+`Status: 200 OK`
 
 ```
 {
@@ -91,3 +108,126 @@ A scaled API handling 12 million+ rows of data for an Ecommerce website
   ]
 }
 ```
+
+#### Add a Question
+
+Adds a question for the given product
+
+```http
+  POST /qa/questions
+```
+
+Body Parameters
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `product_id`| `integer` | **Required**. ID of the Product for which the question is posted |
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `body`| `text` | Text of question being asked |
+| `name`| `text` | Username for question asker |
+| `email`| `text` | Email address for question asker |
+
+Response
+
+`Status: 201 CREATED`
+
+#### Add an Answer
+
+Adds an answer for the given question
+
+```http
+  POST /qa/questions/:question_id/answers
+```
+
+Parameters
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `question_id`| `integer` | **Required**. ID of the question to post the answer for |
+
+Body Parameters
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `body`| `text` | Text of question being asked |
+| `name`| `text` | Username for question asker |
+| `email`| `text` | Email address for question asker |
+| `photos`| `[text]` | An array of urls corresponding to images to display |
+
+Response
+
+`Status: 201 CREATED`
+
+#### Mark Question as Helpful
+
+Updates a question to show it was found helpful.
+
+```http
+  PUT /qa/questions/:question_id/helpful
+```
+
+Parameters
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `question_id`| `integer` | **Required**. ID of the question to update |
+
+Response
+
+`Status: 204 NO CONTENT`
+
+#### Report Question
+
+Updates a question to show it was reported. Note, this action does not delete the question, but the question will not be returned in the above GET request.
+
+```http
+  PUT /qa/questions/:question_id/report
+```
+
+Parameters
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `question_id`| `integer` | **Required**. ID of the question to update |
+
+Response
+
+`Status: 204 NO CONTENT`
+
+#### Mark Answer as Helpful
+
+Updates an answer to show it was found helpful.
+
+```http
+  PUT /qa/answers/:answer_id/helpful
+```
+
+Parameters
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `answer_id`| `integer` | **Required**. ID of the answer to update |
+
+Response
+
+`Status: 204 NO CONTENT`
+
+#### Report Answer
+
+Updates an answer to show it has been reported. Note, this action does not delete the answer, but the answer will not be returned in the above GET request.
+
+```http
+  PUT /qa/answers/:answer_id/report
+```
+
+Parameters
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `answer_id`| `integer` | **Required**. ID of the answer to update |
+
+Response
+
+`Status: 204 NO CONTENT`
